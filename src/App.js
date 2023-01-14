@@ -38,15 +38,20 @@ const App = () => {
   }
 
   return (
-    <div ref={mainDiv} className="px-[100px] pt-[50px] min-w-fit">
+    <div ref={mainDiv} className="px-[100px] pt-[40px] min-w-fit">
       <section className="shadow-2xl rounded-[20px] p-6">
         <div class="sticky top-0 z-20 bg-white ] rounded-[20px]">
           <header class="]">
-            <h1 class="text-4xl mb-[50px] font-extrabold">
-              ToDo List Demo App
+            <h1 class="text-4xl mb-[50px] font-semibold text-blue-600/100 dark:text-blue-500/100">
+              ToDo-List{" "}
             </h1>
           </header>
-          <AddTask toggleAddTask={toggleAddTask} setToggle={setToggle} />
+          <AddTask
+            data={data}
+            setData={setData}
+            toggleAddTask={toggleAddTask}
+            setToggle={setToggle}
+          />
           <div className="header border-b-4 border-black mb-4">
             <div className="items h">#</div>
             <div className="items h r">Task Name</div>

@@ -7,7 +7,7 @@ import "../index.css";
 export default function Table({ data, setData, edit, setEdit }) {
   return (
     <div>
-      <div id="Table" class="w-[100%]">
+      <div className="w-[100%] ">
         {data.map((item, ind) => {
           return (
             <div
@@ -22,12 +22,16 @@ export default function Table({ data, setData, edit, setEdit }) {
               <div className="items ">
                 {(edit === -1 || edit !== ind) && (
                   <BiEdit
-                    className="text-[30px] cursor-pointer text-[#99ccff]"
+                    className="text-[30px] cursor-pointer text-[#0dcaf0] active:text-[grey]"
                     onClick={() => setEdit(ind)}
                   />
                 )}
                 {edit === ind && (
-                  <select>
+                  <select
+                    defaultValue={data[ind].status}
+                    onChange={(e) => handleEdit(ind, e, data, setData, setEdit)}
+                    className="h-[40px] mb-[2px] cursor-pointer border-2 border-[#0dcaf0] rounded-md text-[#0dcaf0] font-bold pl-[5px]"
+                  >
                     <option>Todo</option>
                     <option>Complete</option>
                     <option>Pending</option>
@@ -36,8 +40,8 @@ export default function Table({ data, setData, edit, setEdit }) {
               </div>
               <div className="items ">
                 <AiTwotoneDelete
-                  className="text-[30px]  text-[grey] active:text-red-500 cursor-pointer"
-                  onClick={() => handleDelete(data, ind, setData)}
+                  className="text-[30px]  text-[grey] active:text-[#0dcaf0] cursor-pointer"
+                  onClick={() => handleDelete(data, ind, setData, setEdit)}
                 />
               </div>
             </div>
@@ -48,29 +52,29 @@ export default function Table({ data, setData, edit, setEdit }) {
   );
 }
 
-const handleEdit = (data, ind, taskList, setTaskList, value, setEdit) => {
+const handleEdit = (ind, e, data, setData, setEdit) => {
   let temp = [];
-  for (let i = 0; i < taskList.length; i++) {
-    if (i != ind) temp.push(taskList[i]);
+  for (let i = 0; i < data.length; i++) {
+    if (i != ind) temp.push(data[i]);
   }
 
-  setTaskList([
+  setData([
     ...temp,
     {
-      task: taskList[ind].task,
-      status: value,
+      task: data[ind].task,
+      status: e.target.value,
     },
   ]);
   setEdit(-1);
 };
 
-const handleDelete = (data, ind, setData) => {
-  console.log("hii");
+const handleDelete = (data, ind, setData, setEdit) => {
   let temp = [];
   for (let i = 0; i < data.length; i++) {
     if (i != ind) temp.push(data[i]);
   }
   setData(temp);
+  setEdit(-1);
 };
 
 const StatusText = ({ status }) => {
@@ -85,8 +89,9 @@ const StatusText = ({ status }) => {
   return (
     <div
       style={{
-        color: color,
-        borderColor: color,
+        color: status === "Pending" ? "black" : color,
+        borderColor: status === "Pending" ? "yellow" : color,
+        backgroundColor: status === "Pending" ? color : "",
         borderWidth: "2px",
         fontWeight: "bold",
         border: "2px solid",
