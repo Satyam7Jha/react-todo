@@ -1,7 +1,13 @@
 import React from "react";
 import useWindowDimensions from "../Hooks/useWindowDimensions";
 
-export default function AddTask({ toggleAddTask, setToggle, data, setData }) {
+export default function AddTask({
+  toggleAddTask,
+  setToggle,
+  data,
+  setData,
+  setLoading,
+}) {
   const inputDiv = React.useRef(null);
   const { width } = useWindowDimensions();
 
@@ -19,12 +25,17 @@ export default function AddTask({ toggleAddTask, setToggle, data, setData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    var temp = [{ task: tempTask, status: tempStatus }, ...data];
-    temp.sort((a, b) => {
-      return a.status > b.status ? -1 : 1;
-    });
-    setData(temp);
+
+    setLoading({ loading: true, message: "Adding Task.." });
     setToggle(false);
+    setTimeout(() => {
+      var temp = [{ task: tempTask, status: tempStatus }, ...data];
+      temp.sort((a, b) => {
+        return a.status > b.status ? -1 : 1;
+      });
+      setData(temp);
+      setLoading({ loading: false, message: "" });
+    }, 3000);
   };
 
   return (
@@ -71,7 +82,7 @@ export default function AddTask({ toggleAddTask, setToggle, data, setData }) {
             <div></div>
             <button
               onClick={() => setToggle(true)}
-              className=" border-2 h-[40px] w-[95px] text-m border-[#0dcaf0] text-[#0dcaf0] hover:bg-[#0dcaf0] hover:text-white font-bold py-2 px-2 rounded active:opacity-40"
+              className=" border-2 h-[40px] w-[95px] text-[14px] border-[#0dcaf0] text-[#0dcaf0] hover:bg-[#0dcaf0] hover:text-white font-bold py-2 px-2 rounded active:opacity-40"
             >
               Add Task
             </button>
